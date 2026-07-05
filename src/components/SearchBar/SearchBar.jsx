@@ -4,7 +4,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search todos...' }) 
   return (
     <div className="relative">
       <svg
-        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+        className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -19,13 +19,13 @@ export function SearchBar({ value, onChange, placeholder = 'Search todos...' }) 
 
       <input
         id="todo-search"
-        type="search"
+        type="text"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label="Search todos"
         className={[
-          'w-full rounded-lg border border-slate-200 bg-white py-3 pl-10 pr-10 text-sm',
+          'w-full rounded-lg border border-slate-200 bg-white py-3 pl-12 pr-10 text-sm',
           'text-slate-800 placeholder-slate-400 transition-all duration-150',
           'focus:outline-none focus-visible:border-primary-500 focus-visible:ring-2 focus-visible:ring-primary-500',
           'dark:border-surface-700 dark:bg-surface-800 dark:text-slate-100',
