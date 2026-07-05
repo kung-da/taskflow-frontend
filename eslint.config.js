@@ -28,6 +28,8 @@ export default [
       // react-hooks v5 exposes rules directly (no .configs.recommended on flat config)
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      'react/jsx-uses-react': 'warn',
+      'react/jsx-uses-vars': 'warn',
       'react/prop-types': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'prefer-const': 'error',
@@ -35,4 +37,3 @@ export default [
     },
   },
 ];
-

@@ -2,7 +2,7 @@
 // Reusable button with variant and size props.
 // Always shows disabled state during pending actions to prevent double submits.
 
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 const variants = {
   primary: 'bg-primary-600 hover:bg-primary-700 text-white shadow-sm hover:shadow-md',
@@ -21,7 +21,7 @@ const sizes = {
 /**
  * @param {{ variant?: keyof variants, size?: keyof sizes, loading?: boolean, className?: string } & React.ButtonHTMLAttributes} props
  */
-export function Button({
+export const Button = forwardRef(function Button({
   variant = 'primary',
   size = 'md',
   loading = false,
@@ -29,9 +29,10 @@ export function Button({
   disabled,
   children,
   ...props
-}) {
+}, ref) {
   return (
     <button
+      ref={ref}
       disabled={disabled || loading}
       className={[
         'inline-flex items-center justify-center gap-2 font-medium',
@@ -54,4 +55,4 @@ export function Button({
       {children}
     </button>
   );
-}
+});

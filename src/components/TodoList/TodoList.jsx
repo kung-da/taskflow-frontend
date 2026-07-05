@@ -35,7 +35,7 @@ export function TodoList({
     return (
       <div className="flex flex-col items-center justify-center py-12 gap-3">
         <Spinner size="lg" />
-        <p className="text-sm text-slate-400 dark:text-slate-500">Loading todos…</p>
+        <p className="text-sm text-slate-400 dark:text-slate-500">Loading todos...</p>
       </div>
     );
   }
@@ -43,7 +43,7 @@ export function TodoList({
   // Error state
   if (error) {
     return (
-      <div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-6 text-center animate-fade-in">
+      <div className="rounded-lg border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-6 text-center animate-fade-in">
         <p className="text-sm font-medium text-red-700 dark:text-red-400 mb-3">{error}</p>
         <button
           onClick={onRetry}
@@ -73,7 +73,7 @@ export function TodoList({
   }
 
   return (
-    <ul className="space-y-2" role="list" aria-label="Todo list">
+    <ul className="space-y-3" role="list" aria-label="Todo list">
       {todos.map((todo) => (
         <li key={todo.id}>
           <TodoItem
