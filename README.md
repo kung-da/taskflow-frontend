@@ -1,127 +1,143 @@
 # TaskFlow Frontend
 
-React/Vite frontend for the TaskFlow todo app.
+Frontend cho ứng dụng Todo List, xây dựng bằng React, Vite và TailwindCSS.
 
-## Features
+## Chức Năng
 
-- Display todo list from the backend API
-- Create todos with client-side validation
-- Edit todos inline
-- Delete todos with confirmation dialog
-- Toggle complete/incomplete
-- Search by title with debounce
-- Filter by all, active, and completed
-- Loading, empty, no-results, error, retry, and pending states
-- Responsive TailwindCSS UI
-- Component tests with Vitest and React Testing Library
+- Hiển thị danh sách công việc
+- Thêm công việc mới
+- Chỉnh sửa công việc
+- Xóa công việc với hộp thoại xác nhận
+- Đánh dấu hoàn thành/chưa hoàn thành
+- Tìm kiếm công việc theo tiêu đề
+- Lọc theo trạng thái `All`, `Active`, `Completed`
+- Hiển thị trạng thái loading, empty, no-results, error
+- Responsive trên desktop và mobile
 
-## Tech Stack
+## Công Nghệ
 
 - React 18
 - Vite
 - TailwindCSS
 - Vitest
 - React Testing Library
-- ESLint + Prettier
+- Docker + Nginx
 
-## Backend Requirement
+## Yêu Cầu Trước Khi Chạy
 
-This frontend expects the TaskFlow backend API to be running.
+Frontend cần backend API đang chạy.
 
-Default API URL:
+Mặc định frontend gọi API tại:
 
 ```text
 http://localhost:4000/api
 ```
 
-Start the backend repo first:
+Nếu chạy backend bằng Docker, vào repo backend và chạy:
 
 ```bash
-cd ../taskflow-backend
-npm install
-copy .env.example .env
-npx prisma migrate deploy
-npm run dev
+docker compose -f docker-compose.backend.yml up --build
 ```
 
-## Setup
-
-```bash
-npm install
-copy .env.example .env
-npm run dev
-```
-
-Open:
+Kiểm tra backend:
 
 ```text
-http://localhost:5173
+http://localhost:4000/health
 ```
 
-## Run With Docker
+## Chạy Bằng Docker
 
-Make sure the backend API is running first at `http://localhost:4000/api`.
+Yêu cầu: đã cài Docker Desktop.
 
-From this frontend repo:
+Từ thư mục frontend:
 
 ```bash
 docker compose -f docker-compose.frontend.yml up --build
 ```
 
-Open:
+Mở ứng dụng:
 
 ```text
 http://localhost:5173
 ```
 
-Stop and remove the container:
+Dừng container:
 
 ```bash
 docker compose -f docker-compose.frontend.yml down
 ```
 
-The Docker image bakes `VITE_API_BASE_URL` at build time. To use a different backend URL, edit `docker-compose.frontend.yml`:
+Lưu ý: `VITE_API_BASE_URL` được build vào image. Nếu backend không chạy ở `http://localhost:4000/api`, sửa file `docker-compose.frontend.yml`:
 
 ```yaml
 args:
   VITE_API_BASE_URL: https://your-backend-url/api
 ```
 
-## Environment Variables
+Sau đó build lại:
 
-Create `.env` from `.env.example`.
+```bash
+docker compose -f docker-compose.frontend.yml up --build
+```
 
-| Variable | Example | Purpose |
-|---|---|---|
-| `VITE_API_BASE_URL` | `http://localhost:4000/api` | Backend API base URL |
+## Chạy Không Dùng Docker
 
-For production, set `VITE_API_BASE_URL` to the deployed backend URL before building.
+Tạo file `.env` từ `.env.example`:
+
+```bash
+copy .env.example .env
+```
+
+Cài dependencies và chạy dev server:
+
+```bash
+npm install
+npm run dev
+```
+
+Mở ứng dụng:
+
+```text
+http://localhost:5173
+```
+
+## Biến Môi Trường
+
+File `.env` khi chạy local:
+
+```env
+VITE_API_BASE_URL=http://localhost:4000/api
+```
+
+Khi deploy frontend, đổi biến này thành URL backend đã deploy:
+
+```env
+VITE_API_BASE_URL=https://your-railway-service.up.railway.app/api
+```
 
 ## Scripts
 
-| Command | Purpose |
+| Command | Mô tả |
 |---|---|
-| `npm run dev` | Start Vite dev server |
-| `npm run build` | Build production assets |
-| `npm run preview` | Preview production build locally |
-| `npm test` | Run component tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run lint` | Run ESLint |
-| `npm run format` | Format source files |
+| `npm run dev` | Chạy Vite dev server |
+| `npm run build` | Build production |
+| `npm run preview` | Xem thử bản production build |
+| `npm test` | Chạy test frontend |
+| `npm run test:watch` | Chạy test watch mode |
+| `npm run lint` | Kiểm tra ESLint |
+| `npm run format` | Format code |
 
-## API Contract Used
+## API Frontend Đang Dùng
 
-The frontend calls these backend endpoints:
-
-| Method | Path | UI usage |
+| Method | Endpoint | Mục đích |
 |---|---|---|
-| `GET` | `/api/todos?search=&status=&page=&limit=` | Load list, search, filter |
-| `POST` | `/api/todos` | Create todo |
-| `PUT` | `/api/todos/:id` | Edit todo |
-| `PATCH` | `/api/todos/:id/toggle` | Toggle completion |
-| `DELETE` | `/api/todos/:id` | Delete todo |
+| `GET` | `/api/todos?search=&status=&page=&limit=` | Lấy danh sách, tìm kiếm, lọc |
+| `POST` | `/api/todos` | Thêm công việc |
+| `PUT` | `/api/todos/:id` | Chỉnh sửa công việc |
+| `PATCH` | `/api/todos/:id/toggle` | Đổi trạng thái hoàn thành |
+| `DELETE` | `/api/todos/:id` | Xóa công việc |
 
-Expected list response:
+Response danh sách mong đợi:
 
 ```json
 {
@@ -135,7 +151,7 @@ Expected list response:
 }
 ```
 
-Expected error response:
+Response lỗi mong đợi:
 
 ```json
 {
@@ -147,13 +163,17 @@ Expected error response:
 }
 ```
 
-## Tests
+## Test
 
 ```bash
 npm test
 ```
 
-Current verified result: `6 tests passed`.
+Kết quả đã kiểm tra:
+
+```text
+6 tests passed
+```
 
 ## Build
 
@@ -161,53 +181,53 @@ Current verified result: `6 tests passed`.
 npm run build
 ```
 
-The compiled app is written to `dist/`.
+Thư mục output:
 
-Preview the build:
-
-```bash
-npm run preview
+```text
+dist/
 ```
 
-## Deploy Frontend To Vercel
+## Deploy Vercel
 
-1. Push this frontend folder as its own GitHub repo.
-2. Create a new Vercel project from that repo.
-3. Set the environment variable:
+1. Push thư mục frontend thành một GitHub repo riêng.
+2. Tạo project mới trên Vercel từ repo đó.
+3. Set biến môi trường:
 
 ```env
 VITE_API_BASE_URL=https://your-railway-service.up.railway.app/api
 ```
 
-4. Deploy.
-
-After deployment, update the Railway backend variable:
+4. Deploy frontend.
+5. Sau khi có domain Vercel, quay lại Railway backend và set:
 
 ```env
 CORS_ORIGIN=https://your-vercel-app.vercel.app
 ```
 
-Then redeploy the backend service on Railway.
+6. Redeploy backend trên Railway.
 
-## Project Structure
+## Cấu Trúc Thư Mục
 
 ```text
 src/
-  api/                 HTTP client for backend calls
-  components/          Todo UI and reusable common components
-  context/             TodoProvider and shared state
-  hooks/               useTodos and useDebounce
-  utils/               Frontend validators
-  App.jsx              Main application shell
-  main.jsx             React entry point
+  api/                 Gọi HTTP API tới backend
+  components/          Component giao diện
+  context/             TodoProvider và state dùng chung
+  hooks/               useTodos, useDebounce
+  utils/               Validate dữ liệu frontend
+  App.jsx              Layout chính
+  main.jsx             Entry point React
 tests/
-  TodoItem.test.jsx    Component behavior tests
+  TodoItem.test.jsx    Test component TodoItem
 ```
 
-## UX Notes
+## Checklist Yêu Cầu
 
-- Buttons disable while actions are pending to reduce accidental double submits.
-- Delete uses a confirmation dialog before destructive action.
-- Search and status filter are combined, not treated as separate modes.
-- Empty list and empty search results are shown as different states.
-- Backend errors are surfaced in the UI with a retry path where relevant.
+- [x] Hiển thị danh sách công việc
+- [x] Thêm công việc mới
+- [x] Chỉnh sửa công việc
+- [x] Xóa công việc
+- [x] Đánh dấu hoàn thành/chưa hoàn thành
+- [x] Tìm kiếm hoặc lọc theo trạng thái
+- [x] Có README hướng dẫn cách chạy dự án
+- [x] Có hướng dẫn chạy bằng Docker
